@@ -17,6 +17,10 @@ Run project
 1. uvicorn uvicorn app.main:app --reload
 2. Swagger documentation is available at : http://{host}:{port}/docs#
 
+## ORM - Object Relational Mapping
+
+- used in creating a "bridge" between object-oriented programs and, in most cases, relational databases. `SQLAlchemy` is an ORM.
+
 Save Dependancies
 
 1. Run `pip freeze > requirements.txt` after installing any pip package
