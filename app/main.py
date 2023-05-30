@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Response, status, HTTPException
+from fastapi import FastAPI, Response, status, HTTPException, Depends
 from fastapi.params import Body
 from pydantic import BaseModel
 from typing import Optional
@@ -6,9 +6,24 @@ import random
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import time
+from sqlalchemy.orm import Session
+from . import models
+from .database import engine, SessionLocal
+
+
+models.Base.metadata.create_all(bind=engine)
 
 
 app = FastAPI()
+
+
+# Dependency
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
 
 
 class Post(BaseModel):
@@ -31,27 +46,15 @@ while True:
         print("Error: ", error)
         time.sleep(2)
 
-
-my_posts = [{"title": "title of post 1",
-             "content": "content of post 1", "id": 123}, {"title": "title of post 2", "content": "content of post 2", "id": 213}]
-
-
-def find_post(id):
-    for p in my_posts:
-        if p["id"] == int(id):
-            return p
-
-
-def find_index_post(id):
-    for i, p in enumerate(my_posts):
-        if p['id'] == id:
-            return i
-
-
 @app.get("/")
 async def root():
     # Fast API automatically convert this dictionary to JSON
     return {"message": "Welcome to API!!!"}
+
+
+@app.get("/sqlalchemy")
+def test_post(db: Session = Depends(get_db)):
+    return {"status": "success"}
 
 
 @app.get("/posts")
