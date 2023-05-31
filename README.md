@@ -31,3 +31,13 @@ Used in creating a "bridge" between object-oriented programs and, in most cases,
 
 - Defining Tables as python models
 - Queries can exclusivly made through python code. No SQL is necessary.
+
+### Models
+
+![schema_models](./img/sqlalchemy_models.png)
+SQLAlchemy models defines the how database tables looks like.
+
+### Schema Models
+
+![schema_models](./img/schema_models.png)
+Schemas(Pydantic models) define the shape of the requests and responses.
