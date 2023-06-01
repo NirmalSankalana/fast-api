@@ -14,9 +14,7 @@ app = FastAPI()
 
 @app.get("/")
 async def root():
-    # Fast API automatically convert this dictionary to JSON
     return {"message": "Welcome to API!!!"}
 
-# Mount the routes from the separate files
 app.include_router(post_routes.router)
 app.include_router(user_routes.router)

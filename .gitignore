@@ -3,3 +3,5 @@ venv
 env
 .csv
 .env
+__pycache__/
+*.pyc

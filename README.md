@@ -25,6 +25,9 @@ Save Dependancies
 
 Used in creating a "bridge" between object-oriented programs and, in most cases, relational databases. `SQLAlchemy` is an ORM.
 
+### `SessionLocal` class
+Each instance of the `SessionLocal` class will be a database session. The class itself is not a database session yet.
+
 ![traditional_vs_orm](./img/traditional_vs_orm.png)
 
 ### What ORMs can do
