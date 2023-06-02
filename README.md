@@ -26,6 +26,7 @@ Save Dependancies
 Used in creating a "bridge" between object-oriented programs and, in most cases, relational databases. `SQLAlchemy` is an ORM.
 
 ### `SessionLocal` class
+
 Each instance of the `SessionLocal` class will be a database session. The class itself is not a database session yet.
 
 ![traditional_vs_orm](./img/traditional_vs_orm.png)
@@ -44,3 +45,19 @@ SQLAlchemy models defines the how database tables looks like.
 
 ![schema_models](./img/schema_models.png)
 Schemas(Pydantic models) define the shape of the requests and responses.
+
+## JWT Authentication
+
+![jwt](./img/jwt.png)
+
+### JWT Toekn
+
+![jwt_token](./img/jwt_token.png)
+
+1. Header - Metada about the token(Hashing Algorithm and type of the token)
+2. Payload - Information Which we include. Optional
+3. Signature - for data intergrity
+
+![jwt_token](./img/signature_in_jwt.png)
+
+![jwt_token](./img/Logging%20User.png)
