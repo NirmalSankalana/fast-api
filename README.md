@@ -14,12 +14,12 @@ How to set up the project.
 
 Run project
 
-1. uvicorn uvicorn app.main:app --reload
-2. Swagger documentation is available at : http://{host}:{port}/docs#
+1. uvicorn `uvicorn app.main:app --reload`
+2. Swagger documentation is available at : `http://{host}:{port}/docs#`
 
 Save Dependancies
 
-1. Run `pip freeze > requirements.txt` after installing any pip package
+1. Run `pip` after installing any pip package
 
 ## ORM - Object Relational Mapping
 

@@ -5,6 +5,7 @@ from .. import database
 from ..schemas import user_schema
 from ..models import User
 from ..utils.hash_password import verify_password
+from .. import oauth2
 
 router = APIRouter(tags=['Authentication'])
 
@@ -17,5 +18,5 @@ def login(user_credentials: user_schema.UserLogin, db: Session = Depends(databas
     if not verify_password(user_credentials.password, user.password):
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND, detail="Invalid user credentials")
-
-    return {"token": "Your Token"}
+    access_token = oauth2.create_access_token(data={'user_id': user.id})
+    return {"access_token": access_token, "token_type":'bearer'}
