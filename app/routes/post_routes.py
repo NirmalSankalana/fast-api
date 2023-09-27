@@ -14,13 +14,13 @@ router = APIRouter(
 
 
 @router.get("/", response_model=List[post_schema.Post])
-def get_posts(db: Session = Depends(get_db)):
+def get_posts(db: Session = Depends(get_db), user_id:int=Depends(get_current_user)):
     posts = db.query(models.Post).all()
     return posts
 
 
 @router.get("/{:id}", response_model=post_schema.Post)
-def get_post(id: int, db: Session = Depends(get_db)):
+def get_post(id: int, db: Session = Depends(get_db), user_id:int=Depends(get_current_user)):
     post = db.query(models.Post).filter(models.Post.id == id).first()
     return post
 
@@ -32,8 +32,9 @@ def get_latest_post(db: Session = Depends(get_db)):
 
 
 @router.post("/", status_code=status.HTTP_201_CREATED, response_model=post_schema.Post)
-def create_posts(post: post_schema.PostCreate, db: Session = Depends(get_db)):
+def create_posts(post: post_schema.PostCreate, db: Session = Depends(get_db), user_id:int=Depends(get_current_user)):
     # ** - unpacked the dictionary to the base class
+    print(user_id)
     new_post = models.Post(**post.dict())
     db.add(new_post)
     db.commit()
@@ -42,7 +43,7 @@ def create_posts(post: post_schema.PostCreate, db: Session = Depends(get_db)):
 
 
 @router.delete("/{:id}", status_code=status.HTTP_204_NO_CONTENT)
-def delete_post(id: int, db: Session = Depends(get_db)):
+def delete_post(id: int, db: Session = Depends(get_db), user_id:int=Depends(get_current_user)):
     post = db.query(models.Post).filter(models.Post.id == id)
 
     print(f"Succesfully deleted post {id}")
@@ -55,7 +56,7 @@ def delete_post(id: int, db: Session = Depends(get_db)):
 
 
 @router.put("/{:id}", response_model=post_schema.Post)
-def update_post(id: int, post: post_schema.PostCreate, db: Session = Depends(get_db)):
+def update_post(id: int, post: post_schema.PostCreate, db: Session = Depends(get_db), user_id:int=Depends(get_current_user)):
     post_query = db.query(models.Post).filter(models.Post.id == id)
     post_one = post_query.first()
     if post_one == None:

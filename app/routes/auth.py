@@ -9,7 +9,7 @@ from .. import oauth2
 
 router = APIRouter(tags=['Authentication'])
 
-@router.post('/login')
+@router.post('/login', response_model=user_schema.Token)
 def login(user_credentials: user_schema.UserLogin, db: Session = Depends(database.get_db)):
     user = db.query(User).filter(User.email == user_credentials.email).first()
     if not user:
