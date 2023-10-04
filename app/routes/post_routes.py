@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, status, HTTPException, Response
-from typing import List
+from typing import List, Optional
 from sqlalchemy.orm import Session
 
 from ..schemas import post_schema
@@ -14,14 +14,17 @@ router = APIRouter(
 
 
 @router.get("/", response_model=List[post_schema.Post])
-def get_posts(db: Session = Depends(get_db), current_user:int=Depends(get_current_user)):
-    posts = db.query(models.Post).all()
+def get_posts(db: Session = Depends(get_db), current_user:int=Depends(get_current_user), limit:int = 10, skip:int = 0, search: Optional[str]=""):
+    posts = db.query(models.Post).filter(models.Post.title.contains(search)).limit(limit).offset(skip).all()
     return posts
 
 
 @router.get("/{id}", response_model=post_schema.Post)
-def get_post(id: int, db: Session = Depends(get_db)):
+def get_post(id: int, db: Session = Depends(get_db), current_user:int=Depends(get_current_user)):
     post = db.query(models.Post).filter(models.Post.id == id).first()
+    if post == None:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"post with {id} does not exists.")
     return post
 
 
@@ -66,6 +69,9 @@ def update_post(id: int, post: post_schema.PostCreate, db: Session = Depends(get
     if post_one == None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"post with {id} does not exists.")
+    if int(post_one.owner_id) != int(current_user.id):
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN)
+    
     post_query.update(post.dict(), synchronize_session=False)
     db.commit()
     return post_query.first()
