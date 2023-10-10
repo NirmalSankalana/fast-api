@@ -4,7 +4,7 @@ from fastapi.params import Body
 from . import models
 from .database import engine, get_db
 from .routes import post_routes, user_routes, auth
-
+from .config import settings
 
 models.Base.metadata.create_all(bind=engine)
 
