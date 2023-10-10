@@ -85,3 +85,8 @@ Schemas(Pydantic models) define the shape of the requests and responses.
 ![jwt_token](./img/signature_in_jwt.png)
 
 ![jwt_token](./img/Logging%20User.png)
+
+### Composite Key
+
+![composite_key](./img/composite_key.png)
+A composite key is a candidate key that consists of two or more attributes that together uniquely identify an entity occurrence.
