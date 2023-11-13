@@ -90,3 +90,7 @@ Schemas(Pydantic models) define the shape of the requests and responses.
 
 ![composite_key](./img/composite_key.png)
 A composite key is a candidate key that consists of two or more attributes that together uniquely identify an entity occurrence.
+
+### Vote Route
+
+![vote_route](./img/vote_route.png)
