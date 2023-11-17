@@ -3,7 +3,7 @@ from fastapi.params import Body
 
 from . import models
 from .database import engine, get_db
-from .routes import post_routes, user_routes, auth
+from .routes import post_routes, user_routes, auth, vote_route
 from .config import settings
 
 models.Base.metadata.create_all(bind=engine)
@@ -18,4 +18,5 @@ async def root():
 
 app.include_router(post_routes.router)
 app.include_router(user_routes.router)
+app.include_router(vote_route.router)
 app.include_router(auth.router)
