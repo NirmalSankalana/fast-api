@@ -1,7 +1,4 @@
 # fast API development
-
-This microservice is responsible for managing smart chatbot operations.
-
 How to set up the project.
 
 1. Install python 3.8 or above if not available
