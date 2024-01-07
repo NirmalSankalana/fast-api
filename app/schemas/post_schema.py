@@ -9,7 +9,6 @@ class PostBase(BaseModel):
     published: bool = True
 
 
-
 class PostCreate(PostBase):
     pass
 
@@ -22,3 +21,8 @@ class Post(PostBase):
 
     class Config:
         orm_mode = True
+
+
+class PostOut(Post):
+    Post: Post
+    votes: int = 0

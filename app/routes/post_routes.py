@@ -15,8 +15,7 @@ router = APIRouter(
 )
 
 
-# @router.get("/", response_model=List[post_schema.Post])
-@router.get("/")
+@router.get("/", response_model=List[post_schema.PostOut])
 def get_posts(db: Session = Depends(get_db), current_user: int = Depends(get_current_user), limit: int = 10, skip: int = 0, search: Optional[str] = ""):
     posts = db.query(models.Post).filter(
         models.Post.title.contains(search)).limit(limit).offset(skip).all()
@@ -32,6 +31,9 @@ def get_posts(db: Session = Depends(get_db), current_user: int = Depends(get_cur
                 "id": post.id,
                 "title": post.title,
                 "content": post.content,
+                "published": post.published,
+                "owner": post.owner_id,
+                "created_at": post.created_at.isoformat(),
                 # Add other fields as needed
             },
             "votes": vote_count
