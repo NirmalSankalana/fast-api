@@ -21,7 +21,8 @@ def get_posts(db: Session = Depends(get_db), current_user: int = Depends(get_cur
         models.Post.title.contains(search)).limit(limit).offset(skip).all()
 
     results = db.query(models.Post, func.count(models.Vote.post_id).label("votes")).join(
-        models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).all()
+        models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).filter(
+        models.Post.title.contains(search)).limit(limit).offset(skip).all()
 
     # Convert the data to a format that can be easily serialized to JSON
     serialized_results = []
