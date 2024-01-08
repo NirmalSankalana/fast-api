@@ -44,13 +44,32 @@ def get_posts(db: Session = Depends(get_db), current_user: int = Depends(get_cur
     return JSONResponse(content=serialized_results)
 
 
-@router.get("/{id}", response_model=post_schema.Post)
+@router.get("/{id}", response_model=post_schema.PostOut)
 def get_post(id: int, db: Session = Depends(get_db), current_user: int = Depends(get_current_user)):
     post = db.query(models.Post).filter(models.Post.id == id).first()
-    if post == None:
+    result = db.query(models.Post, func.count(models.Vote.post_id).label("votes")).join(
+        models.Vote, models.Vote.post_id == models.Post.id, isouter=True).group_by(models.Post.id).filter(models.Post.id == id).first()
+
+    if post is None:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"post with {id} does not exists.")
-    return post
+                            detail=f"Post with ID {id} does not exist.")
+
+    # Unpack the result tuple
+    post_object, vote_count = result
+
+    serialized_result = {
+        "post": {
+            "id": post_object.id,
+            "title": post_object.title,
+            "content": post_object.content,
+            "published": post_object.published,
+            "owner": post_object.owner_id,
+            "created_at": post_object.created_at.isoformat(),
+        },
+        "votes": vote_count
+    }
+
+    return JSONResponse(content=serialized_result)
 
 
 @router.get("/latest", response_model=post_schema.Post)
